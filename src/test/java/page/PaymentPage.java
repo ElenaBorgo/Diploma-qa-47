@@ -24,7 +24,7 @@ public class PaymentPage {
 
     public ApprovedPayment validCard(DataHelper.CardInfo info) {
         cardNumber.setValue(info.getCardNumber());
-//        Как мне сослаться на валидные данные одним методом, если они разбиты?
+//        Как мне сослаться конкретно на CardInfo.getApprovedCard в этом методе?
     }
 
     public class ApprovedPayment {}
