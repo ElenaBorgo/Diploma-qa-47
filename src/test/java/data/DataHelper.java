@@ -1,66 +1,48 @@
 package data;
 
 import com.github.javafaker.Faker;
-import lombok.Value;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class DataHelper {
-    private DataHelper() {}
-
-    public static CardInfo getApprovedCard() {
-        return new CardInfo("4444 4444 4444 4441");
+    private DataHelper() {
     }
 
-    public static CardInfo getDeclinedCard() {
-        return new CardInfo("4444 4444 4444 4442");
+    public static String getApprovedCard() {
+        return "4444 4444 4444 4441";
     }
 
-    public static Month validMonth() {
-        return new Month(new Random().nextInt(12));
+    public static String getDeclinedCard() {
+        return "4444 4444 4444 4442";
     }
 
-    public static Month invalidMonth() {
-        return new Month(new Random().nextInt());
+    public static String generateMonth(int monthsToAdd) {
+        return LocalDate.now().plusMonths(monthsToAdd).format(DateTimeFormatter.ofPattern("MM"));
     }
 
-    public static Year validYear() {
-        return new Year(new Random().nextInt(28));
+    public static String invalidMonth(int monthsToSubtract) {
+        return LocalDate.now().minusMonths(monthsToSubtract).format(DateTimeFormatter.ofPattern("MM"));
     }
 
-    public static Year invalidYear() {
-        return new Year(new Random().nextInt());
+    public static String generateYear(int yearsToAdd) {
+        return LocalDate.now().plusYears(yearsToAdd).format(DateTimeFormatter.ofPattern("yy"));
     }
 
-    public static Owner validOwner() {
+    public static String invalidYear(int yearsToSubtract) {
+        return LocalDate.now().minusYears(yearsToSubtract).format(DateTimeFormatter.ofPattern("yy"));
+    }
+
+    public static String owner() {
         var faker = new Faker();
-        return new Owner(faker.name().lastName() + " " + faker.name().firstName());
+        return faker.name().lastName() + " " + faker.name().firstName();
     }
-//    invalidOwner еще не придумала
 
-    public static int CVC() {
+    public static String CVC() {
         return new Random().nextInt();
     }
 
-    @Value
-    public static class CardInfo {
-        String cardNumber;
-    }
-
-    @Value
-    public static class Month {
-        int month;
-    }
-
-    @Value
-    public static class Year {
-        int year;
-    }
-
-    @Value
-    public static class Owner {
-        String owner;
-    }
-//    Стоит ли объединить все поля в один класс? Если да, то каким образом мне возвращать Random().nextInt()?
-//    Значение же должно быть int.
 }
+
+
