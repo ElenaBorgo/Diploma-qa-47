@@ -1,8 +1,11 @@
 package page;
 
+import com.beust.ah.A;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import data.DataHelper;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -15,28 +18,52 @@ public class CreditPage {
     private SelenideElement cvc = $x("//*[text() ='CVC/CVV']");
     private SelenideElement button = $x("//*[text() ='Продолжить']");
 
+    DataHelper data = new DataHelper();
+
     public CreditPage() {
         heading.shouldBe(Condition.visible);
     }
 
-    public ApprovedCredit validTransaction(DataHelper dataHelper) {
-        cardNumber.setValue(dataHelper.getApprovedCard());
-        month.setValue(dataHelper.generateMonth(3));
-        year.setValue(dataHelper.generateYear(2));
-        owner.setValue(dataHelper.owner());
-        cvc.setValue(dataHelper.CVC());
+    public ApprovedCredit validTransaction() {
+        cardNumber.setValue(data.getApprovedCard());
+        month.setValue(data.generateMonth(3));
+        year.setValue(data.generateYear(2));
+        owner.setValue(data.owner());
+        cvc.setValue(data.CVC());
         button.click();
         return new ApprovedCredit();
     }
 
-    public DeclinedCredit declinedTransaction(DataHelper dataHelper) {
-        cardNumber.setValue(dataHelper.getDeclinedCard());
-        month.setValue(dataHelper.invalidMonth(7));
-        year.setValue(dataHelper.invalidYear(3));
-        owner.setValue(dataHelper.owner());
-        cvc.setValue(dataHelper.CVC());
+    public DeclinedCredit declinedTransaction() {
+        cardNumber.setValue(data.getDeclinedCard());
+        month.setValue(data.generateMonth(3));
+        year.setValue(data.generateYear(2));
+        owner.setValue(data.owner());
+        cvc.setValue(data.CVC());
         button.click();
         return new DeclinedCredit();
     }
+
+    public class ApprovedCredit {
+        private SelenideElement successNotification = $x("//*[text()='Успешно']");
+
+        public ApprovedCredit successTransaction() {
+            successNotification.shouldBe(Condition.visible, Duration.ofSeconds(8));
+            return new ApprovedCredit();
+        }
+    }
+
+    public class DeclinedCredit {
+        private SelenideElement errorNotification = $x("//*[text() = 'Ошибка']");
+
+        public DeclinedCredit errorTransaction() {
+            errorNotification.shouldBe(Condition.visible, Duration.ofSeconds(8));
+            return new DeclinedCredit();
+        }
+    }
 }
+
+
+
+
 

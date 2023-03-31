@@ -15,13 +15,13 @@ public class DashboardPage {
         heading.shouldBe(Condition.visible);
     }
 
-    public PaymentPage page() {
+    public PaymentPage paymentPage() {
         paymentButton.click();
-        return page(PaymentPage.class);
+        return new PaymentPage();
     }
 
-    public CreditPage page() {
+    public CreditPage creditPage() {
         creditButton.click();
-        return page(CreditPage.class);
+        return new CreditPage();
     }
 }

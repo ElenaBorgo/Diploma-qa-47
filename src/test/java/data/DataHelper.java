@@ -1,5 +1,6 @@
 package data;
 
+import com.codeborne.selenide.SetValueOptions;
 import com.github.javafaker.Faker;
 
 import java.time.LocalDate;
@@ -7,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class DataHelper {
-    private DataHelper() {
+    public DataHelper() {
     }
 
     public static String getApprovedCard() {
@@ -40,9 +41,11 @@ public class DataHelper {
     }
 
     public static String CVC() {
-        return new Random().nextInt();
+        final Random random = new Random();
+        int min = 99;
+        int max = 1000;
+        return String.valueOf(random.nextInt((max - min) + 1) + min);
     }
-
 }
 
 

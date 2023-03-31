@@ -17,27 +17,47 @@ public class PaymentPage {
     private SelenideElement cvc = $x("//*[text() ='CVC/CVV']");
     private SelenideElement button = $x("//*[text() ='Продолжить']");
 
+    DataHelper data = new DataHelper();
+
     public PaymentPage() {
         heading.shouldBe(Condition.visible);
     }
 
-    public ApprovedPayment validTransaction(DataHelper dataHelper) {
-        cardNumber.setValue(dataHelper.getApprovedCard());
-        month.setValue(dataHelper.generateMonth(3));
-        year.setValue(dataHelper.generateYear(2));
-        owner.setValue(dataHelper.owner());
-        cvc.setValue(dataHelper.CVC());
+    public ApprovedPayment validTransaction() {
+        cardNumber.setValue(data.getApprovedCard());
+        month.setValue(data.generateMonth(3));
+        year.setValue(data.generateYear(2));
+        owner.setValue(data.owner());
+        cvc.setValue(data.CVC());
         button.click();
         return new ApprovedPayment();
     }
 
+    public DeclinedPayment declinedTransaction() {
+        cardNumber.setValue(data.getDeclinedCard());
+        month.setValue(data.generateMonth(3));
+        year.setValue(data.generateYear(2));
+        owner.setValue(data.owner());
+        cvc.setValue(data.CVC());
+        button.click();
+        return new DeclinedPayment();
+    }
 
     public class ApprovedPayment {
         private SelenideElement successNotification = $x("//*[text()='Успешно']");
 
-        public void successTransaction() {
+        public ApprovedPayment successTransaction() {
             successNotification.shouldBe(Condition.visible, Duration.ofSeconds(8));
+            return new ApprovedPayment();
         }
-//        Не знаю, какого типа делать этот метод или оставить просто класс и дописать return new ApprovedPayment.
+    }
+
+    public class DeclinedPayment {
+        private SelenideElement errorNotification = $x("//*[text() = 'Ошибка']");
+
+        public DeclinedPayment errorTransaction() {
+            errorNotification.shouldBe(Condition.visible, Duration.ofSeconds(8));
+            return new DeclinedPayment();
+        }
     }
 }
