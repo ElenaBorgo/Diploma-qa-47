@@ -1,10 +1,10 @@
 package data;
 
-import com.codeborne.selenide.SetValueOptions;
 import com.github.javafaker.Faker;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Random;
 
 public class DataHelper {
@@ -35,8 +35,8 @@ public class DataHelper {
         return LocalDate.now().minusYears(yearsToSubtract).format(DateTimeFormatter.ofPattern("yy"));
     }
 
-    public static String owner() {
-        var faker = new Faker();
+    public static String owner(String locale) {
+        var faker = new Faker(new Locale(locale));
         return faker.name().lastName() + " " + faker.name().firstName();
     }
 
