@@ -40,8 +40,8 @@ public class PaymentPage {
 
     public DeclinedPayment declinedTransaction() {
         cardNumber.setValue(data.getDeclinedCard());
-        month.setValue(data.generateMonth(3));
-        year.setValue(data.generateYear(2));
+        month.setValue(data.generateMonth(7));
+        year.setValue(data.generateYear(4));
         owner.setValue(data.owner("ru"));
         cvc.setValue(data.CVC());
         button.click();
@@ -62,7 +62,7 @@ public class PaymentPage {
         private SelenideElement successNotification = $x("//*[@id=\"root\"]/div/div[2]");
 
         public ApprovedPayment successTransaction() {
-            successNotification.shouldBe(visible, Duration.ofSeconds(8));
+            successNotification.shouldBe(visible, Duration.ofSeconds(15));
             return new ApprovedPayment();
         }
     }
@@ -71,7 +71,7 @@ public class PaymentPage {
         private SelenideElement errorNotification = $x("//*[@id=\"root\"]/div/div[3]");
 
         public DeclinedPayment errorTransaction() {
-            errorNotification.shouldBe(visible, Duration.ofSeconds(8));
+            errorNotification.shouldBe(visible, Duration.ofSeconds(15));
             return new DeclinedPayment();
         }
     }

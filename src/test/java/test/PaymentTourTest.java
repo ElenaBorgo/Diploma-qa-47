@@ -1,12 +1,14 @@
 package test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import page.CreditPage;
 import page.DashboardPage;
-import page.PaymentPage;
 
-import static com.codeborne.selenide.Selenide.open;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PaymentTourTest {
@@ -21,11 +23,10 @@ public class PaymentTourTest {
     void shouldSuccessTransaction() {
         var paymentPage = dashboardPage.paymentPage();
         var approvedPayment = paymentPage.validTransaction();
-        var successTransaction = approvedPayment.successTransaction();
-//        var expected  = approvedPayment.successTransaction();
-//        var actual = ?
-//       Например, я написала ожидаемый результат - это метод successTransaction(), но что писать в актуальном? И нужны
-//       ли в этом тесте ассерты?
+        var successTransaction  = approvedPayment.successTransaction();
+//        var actual = $x("//*[@id=\"root\"]/div/div[2]")
+//                .shouldBe(visible, Duration.ofSeconds(15));
+//        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -35,24 +36,25 @@ public class PaymentTourTest {
         var successTransaction = approvedCredit.successTransaction();
     }
 
-//    @Test
-//    void shouldShowErrorMassage() {
-//        var paymentPage = dashboardPage.paymentPage();
-//        var errorMessage = paymentPage.makeTransactionWithInvalidMonth();
-//    Я создала метод, где пользователь вводит неправильный месяц. Метод типа void. Я не могу его использовать в тесте
-//    из-за этого. Какого типа он должен быть, чтобы я смогла его вызвать? Static не получается. Я не хочу для него
-//    отдельный класс создавать.
-//    }
+    @Test
+    void shouldShowErrorMassageIfWrongMonth() {
+        var paymentPage = dashboardPage.paymentPage();
+        paymentPage.makeTransactionWithInvalidMonth();
+    }
 
-//    @Test
-//    void shouldDeclinedCredit() {
-//        var creditPage = dashboardPage.creditPage();
-//        var declinedCredit = creditPage.declinedTransaction();
-//        var expected = declinedCredit.errorTransaction();
-//        var actual = CreditPage.ApprovedCredit.class;
+    @Test
+    void shouldShowErrorMessageIfWrongYear() {
+        var creditPage = dashboardPage.creditPage();
+        creditPage.makeTransactionWithInvalidYear();
+    }
+
+    @Test
+    void shouldDeclinedCredit() {
+        var creditPage = dashboardPage.creditPage();
+        var declinedCredit = creditPage.declinedTransaction();
+        var errorTransaction = declinedCredit.errorTransaction();
+//        var actual = $x("//*[@id=\"root\"]/div/div[2]")
+//                .shouldBe(visible, Duration.ofSeconds(15));
 //        assertEquals(expected, actual);
-//    }
-//    Здесь не проходят ассерты. Во-первых, пришлось в методе errorTransaction(), сообщение сделать hidden, потому что оно не появляется.
-//    Во-вторых, что писать в актуальном результате? Так как у меня одобренный и отклоненный кредит в разных классах, я не могу
-//    в actual привести другой класс.
+    }
 }
