@@ -18,7 +18,7 @@ services:
     volumes:
       - ./data:/var/lib/postgresql
     environment:
-      - POSTGRES_DB=app
+      - POSTGRES_DATABASE=app
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=pass
   node-app:

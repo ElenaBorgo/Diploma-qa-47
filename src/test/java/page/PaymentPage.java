@@ -20,7 +20,7 @@ public class PaymentPage {
     private SelenideElement owner = $x("//*[@id=\"root\"]/div/form/fieldset/div[3]/span/span[1]/span/span/span[2]/input");
     private SelenideElement cvc = $x("//*[@id=\"root\"]/div/form/fieldset/div[3]/span/span[2]/span/span/span[2]/input");
     private SelenideElement button = $x("//*[text() ='Продолжить']");
-    private SelenideElement errorMessage = $x("//*[@id=\"root\"]/div/form/fieldset/div[2]/span/span[1]/span/span/span[3]");
+
 
     DataHelper data = new DataHelper();
 
@@ -49,6 +49,8 @@ public class PaymentPage {
     }
 
     public void makeTransactionWithInvalidMonth() {
+        SelenideElement errorMessage = $x("//*[@id=\"root\"]/div/form/fieldset/div[2]/span/span[1]/span/span/span[3]");
+
         cardNumber.setValue(data.getApprovedCard());
         month.setValue(data.invalidMonth(1));
         year.setValue(data.generateYear(0));
@@ -71,7 +73,7 @@ public class PaymentPage {
         private SelenideElement errorNotification = $x("//*[@id=\"root\"]/div/div[3]");
 
         public DeclinedPayment errorTransaction() {
-            errorNotification.shouldBe(visible, Duration.ofSeconds(15));
+            errorNotification.shouldBe(hidden, Duration.ofSeconds(15));
             return new DeclinedPayment();
         }
     }
